@@ -6,3 +6,8 @@ Initializes default user so things can be tested
 
 ## Documentation page 
 Testing some plugins and react data sending + spring cors
+
+## Charts page
+Testing popular react plugins how they work
+
+## Todo css learning...
