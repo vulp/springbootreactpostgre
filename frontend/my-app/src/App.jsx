@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Home from './components/Home.jsx';
-import TestPage from './components/TestPage';
+import DocumentationEditor from './components/DocumentationEditor';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 
 const ProtectedRoute = ({ children }) => {
@@ -20,7 +20,7 @@ function App() {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="/test">Test Page</Link>
+                            <Link to="/documentation">Documentation</Link>
                         </li>
                     </ul>
                 </nav>
@@ -35,10 +35,10 @@ function App() {
                         }
                     />
                     <Route
-                        path="/test"
+                        path="/documentation"
                         element={
                             <ProtectedRoute>
-                                <TestPage />
+                                <DocumentationEditor />
                             </ProtectedRoute>
                         }
                     />
