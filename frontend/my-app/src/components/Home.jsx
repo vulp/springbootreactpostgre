@@ -9,11 +9,12 @@ function Home() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+/*
+useEffect +fetch example for the begin
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetchWithAuth('/api/hello'); // Replace with your protected API endpoint
+                const response = await fetchWithAuth('/api/someplace');
                 if (response.ok) {
                     const jsonData = await response.json();
                     setData(jsonData);
@@ -29,6 +30,7 @@ function Home() {
 
         fetchData();
     }, [fetchWithAuth]);
+*/
 
     return (
         <div>
