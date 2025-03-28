@@ -4,6 +4,7 @@ import com.react.demo.security.JwtAuthenticationFilter;
 import com.react.demo.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -50,10 +51,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //todo check that cors really works!
+
         http
+               // .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable()) // Disable CSRF as JWT is stateless
                 .authorizeHttpRequests(auth -> auth
-                        //  .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                //          .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/auth/**").permitAll() // Allow /auth/login
                         .anyRequest().authenticated()
                 )

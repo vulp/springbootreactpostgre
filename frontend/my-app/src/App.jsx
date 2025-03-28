@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Home from './components/Home.jsx';
 import DocumentationEditor from './components/DocumentationEditor';
+import Dashboard from './components/Dashboard.jsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 
 const ProtectedRoute = ({ children }) => {
@@ -22,6 +23,9 @@ function App() {
                         <li>
                             <Link to="/documentation">Documentation</Link>
                         </li>
+                        <li>
+                            <Link to="/dashboard">Dashboard</Link>
+                        </li>
                     </ul>
                 </nav>
                 <Routes>
@@ -39,6 +43,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <DocumentationEditor />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
                             </ProtectedRoute>
                         }
                     />
