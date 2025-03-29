@@ -23,6 +23,13 @@ public class DemoApplication {
 				User user = new User("hyperadmin", encodedPassword, "hyperadmin@localhost.local", User.Role.ADMIN);
 				userRepository.save(user);
 			}
+
+			//this is just for bot testing purpose so actual api token creating is not needed at the begin
+			if (userRepository.findByUsername("korneliusvalountoensio").isEmpty()) {
+				String encodedPassword = passwordEncoder.encode("changethisforproduction2");
+				User user = new User("korneliusvalountoensio", encodedPassword, "korneliusvalountoensio@localhost.local", User.Role.USER);
+				userRepository.save(user);
+			}
 		};
 	}
 }

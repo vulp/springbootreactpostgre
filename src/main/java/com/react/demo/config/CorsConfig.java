@@ -27,6 +27,20 @@ public class CorsConfig {
                         .allowedHeaders("*")
                         .maxAge(3600);
 
+                registry.addMapping("/api/bot/**")
+                        .allowedOrigins("http://localhost:3978")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowCredentials(true)
+                        .allowedHeaders("*")
+                        .maxAge(3600);
+
+                registry.addMapping("/api/bot/**")
+                        .allowedOrigins("http://localhost:64561")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowCredentials(true)
+                        .allowedHeaders("*")
+                        .maxAge(3600);
+
 
 
             }

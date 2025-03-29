@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                 //          .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/auth/**").permitAll() // Allow /auth/login
+                //        .requestMatchers("/api/bot/receive-message").permitAll()//just for testing that ms bot emulator works
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
