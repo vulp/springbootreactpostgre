@@ -11,6 +11,8 @@ Testing some plugins and react data sending + spring cors
 Emulator uses this with javascript
 https://learn.microsoft.com/en-us/azure/bot-service/bot-service-debug-emulator?view=azure-bot-service-4.0&tabs=javascript
 
+#Teams like bot to send example Teams meeting summary to backend to save it as documentation.
+The other Node.js based project that is linked to this: https://github.com/vulp/microsoftsbotframeworkemulator
 
 ## Charts page
 Testing popular react plugins how they work with cool charts
