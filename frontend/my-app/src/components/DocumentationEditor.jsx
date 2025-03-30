@@ -4,10 +4,19 @@ import 'react-quill-new/dist/quill.snow.css';
 import {useAuth} from '../hooks/useAuth';
 import {useApi} from '../utils/api';
 
-function DocumentationEditor() {
+function DocumentationEditor({document}) {
     const [documentContent, setDocumentContent] = useState('');
     const {logout} = useAuth();
     const {fetchWithAuth} = useApi();
+
+    useEffect(() => {
+        if (document && document.content) {
+            setDocumentContent(document.content);
+        } else {
+            setDocumentContent(''); 
+        }
+    }, [document]);
+
 
     const handleChange = (value) => {
         setDocumentContent(value);
@@ -24,13 +33,7 @@ function DocumentationEditor() {
                 body: JSON.stringify({content: documentContent}),
             });
 
-            //TODO
-           // if (result.status === 200) {
-           //     console.log('Documentation created');
-          //  } else {
-           //     console.error('Documentation creating failed');
-           // }
-
+            
         } catch (error) {
             console.error('Error',error);
         }
@@ -39,6 +42,7 @@ function DocumentationEditor() {
     return (
         <div>
             <h2>Documentation Editor</h2>
+            <p>todo naming needed</p>
             <ReactQuill
                 theme="snow" // You can choose other themes as well
                 value={documentContent}

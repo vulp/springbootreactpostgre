@@ -1,5 +1,8 @@
 package com.react.demo.controller;
 
+import com.react.demo.model.Documentation;
+import com.react.demo.repository.DocumentationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +13,13 @@ import java.util.Map;
 
 @RestController
 public class BotAndTeamController {
+
+    private final DocumentationRepository documentationRepository;
+
+    @Autowired
+    public BotAndTeamController(DocumentationRepository documentationRepository) {
+        this.documentationRepository = documentationRepository;
+    }
 
     @PostMapping("/api/bot/receive-message")
     public ResponseEntity<String> receiveMessageFromBot(@RequestBody Map<String, String> payload) {

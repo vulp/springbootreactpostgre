@@ -57,7 +57,7 @@ public class SecurityConfig {
                // .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable()) // Disable CSRF as JWT is stateless
                 .authorizeHttpRequests(auth -> auth
-                //          .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                          .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/auth/**").permitAll() // Allow /auth/login
                 //        .requestMatchers("/api/bot/receive-message").permitAll()//just for testing that ms bot emulator works
                         .anyRequest().authenticated()

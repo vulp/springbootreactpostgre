@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Home from './components/Home.jsx';
-import DocumentationEditor from './components/DocumentationEditor';
+import DocumentationEditor from './components/DocumentationEditor';//TODO move from here under new parent
+import DocumentationWorkspace from './components/DocumentationWorkspace';
 import Dashboard from './components/Dashboard.jsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 
@@ -20,11 +21,12 @@ function App() {
                         <li>
                             <Link to="/">Home</Link>
                         </li>
-                        <li>
-                            <Link to="/documentation">Documentation</Link>
-                        </li>
+              
                         <li>
                             <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                        <li>
+                            <Link to="/documentationWorkspace">Documentation Workspace</Link>
                         </li>
                     </ul>
                 </nav>
@@ -38,19 +40,20 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
-                    <Route
-                        path="/documentation"
-                        element={
-                            <ProtectedRoute>
-                                <DocumentationEditor />
-                            </ProtectedRoute>
-                        }
-                    />
+                
                     <Route
                         path="/dashboard"
                         element={
                             <ProtectedRoute>
                                 <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/documentationWorkspace"
+                        element={
+                            <ProtectedRoute>
+                                <DocumentationWorkspace />
                             </ProtectedRoute>
                         }
                     />
