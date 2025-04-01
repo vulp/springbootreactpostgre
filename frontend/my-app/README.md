@@ -1,3 +1,3 @@
-# React + Vite
+# React + Vite + vitest for testing
 
-basic jwt login, code cleaning todo
+basic jwt login
