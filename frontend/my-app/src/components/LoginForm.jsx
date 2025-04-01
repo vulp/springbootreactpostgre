@@ -28,6 +28,7 @@ function LoginForm() {
           <input
             type="text"
             id="username"
+            placeholder='username'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
