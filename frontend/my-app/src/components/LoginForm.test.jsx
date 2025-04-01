@@ -1,5 +1,6 @@
 import { expect, test, vi } from 'vitest'
 //import { render } from 'vitest-browser-react'
+//import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
@@ -14,5 +15,6 @@ test('test1234', () => {
 test('test234', () => {
 
    render(<BrowserRouter><AuthProvider><LoginForm /></AuthProvider> </BrowserRouter>)
-    screen.getByPlaceholderText('username')
+   const usernameInput = screen.getByPlaceholderText('username')
+   expect(usernameInput).toBeInTheDocument();
 });
