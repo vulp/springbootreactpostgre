@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Home from './components/Home.jsx';
-import DocumentationEditor from './components/DocumentationEditor';//TODO move from here under new parent
 import DocumentationWorkspace from './components/DocumentationWorkspace';
 import Dashboard from './components/Dashboard.jsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
