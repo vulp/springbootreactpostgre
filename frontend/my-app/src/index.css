@@ -21,7 +21,7 @@ a {
 a:hover {
   color: #535bf2;
 }
-
+/*
 body {
   margin: 0;
   display: flex;
@@ -29,6 +29,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+*/
 
 h1 {
   font-size: 3.2em;
@@ -65,4 +66,61 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+body {
+  margin: 0; /* Remove default body margins */
+  padding: 0; /* Remove default body padding */
+  height: 100vh; /* Ensure body takes up the full viewport height */
+  display: flex; /* Enable flexbox for overall layout */
+  flex-direction: column; /* Stack top bar and content area vertically */
+}
+
+.top-bar {
+  background-color: #f0f0f0; /* Example background color */
+  height: 40px;
+  width: 100%;
+  display: flex; /* Enable flexbox for top bar elements */
+  justify-content: flex-end; /* Push content to the right */
+  align-items: center; /* Vertically align items in the top bar */
+  padding-right: 15px; /* Add some padding on the right */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+}
+
+.user-icon-placeholder {
+  width: 30px; /* Example width for the icon/placeholder */
+  height: 30px; /* Example height for the icon/placeholder */
+  border-radius: 50%; /* Make it a circle */
+  background-color: #ddd; /* Example placeholder color */
+  /* You can add an actual user icon here as a background image or using an icon font */
+}
+
+.content-area {
+  display: flex; /* Enable flexbox for the main content area (navigation and content) */
+  flex-grow: 1; /* Allow content area to take up remaining vertical space */
+}
+
+.navigation {
+  background-color: #e0e0e0; /* Example background color for navigation */
+  width: 155px;
+  height: 100%; /* Takes full height of the content area */
+  /* Add your navigation items here */
+  display: flex;
+  flex-direction: column; /* Stack navigation items vertically */
+  align-items: center; /* Center items horizontally */
+  padding-top: 10px; /* Add some top padding for navigation items */
+  box-sizing: border-box;
+}
+
+.navigation ul {
+  list-style-type: none;
+}
+
+.main-content {
+  background-color: #fff; /* Example background color for main content */
+  flex-grow: 1; /* Takes up the remaining width */
+  height: 100%; /* Takes full height of the content area */
+  padding: 20px; /* Add some padding around the content */
+  box-sizing: border-box;
+  /* Your wysiwyg editor or other content will go here */
 }
