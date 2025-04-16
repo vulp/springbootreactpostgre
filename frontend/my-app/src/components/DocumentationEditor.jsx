@@ -1,22 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import {useAuth} from '../hooks/useAuth';
-import {useApi} from '../utils/api';
+import { useAuth } from '../hooks/useAuth';
+import { useApi } from '../utils/api';
+import DangerButton from './DangerButton.jsx';
 
-function DocumentationEditor({document}) {
+function DocumentationEditor({ document, refreshList }) {
     const [documentContent, setDocumentContent] = useState('');
     const [identifier, setIdentifier] = useState('');
-    const {logout} = useAuth();
-    const {fetchWithAuth} = useApi();
+    const { logout } = useAuth();
+    const { fetchWithAuth } = useApi();
 
     useEffect(() => {
         if (document) {
             setDocumentContent(document.content);
             setIdentifier(document.identifier)
         } else {
-         //   setDocumentContent(''); 
-       //     setIdentifier('');
+            //   setDocumentContent(''); 
+            //     setIdentifier('');
         }
     }, [document]);
 
@@ -33,12 +34,32 @@ function DocumentationEditor({document}) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({content: documentContent, identifier: identifier}),
+                body: JSON.stringify({ content: documentContent, identifier: identifier }),
             });
+            if (result.ok) {
+                refreshList();
+            }
 
-            
         } catch (error) {
-            console.error('Error',error);
+            console.error('Error', error);
+        }
+    }
+
+    const handleDelete = async () => {
+        try {
+            const result = await fetchWithAuth(`http://localhost:8080/api/documentation/${document.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+          
+            if (result.ok) {
+                refreshList();
+            }
+
+        } catch (error) {
+            console.error('Error', error);
         }
     }
 
@@ -47,29 +68,30 @@ function DocumentationEditor({document}) {
             <h2>Documentation Editor</h2>
             <label>
                 Identifier:
-                <input name='identifier' placeholder='name' value={identifier} onChange={e => setIdentifier(e.target.value)}/>
+                <input name='identifier' placeholder={identifier.length > 0 ? (identifier) : 'Create new'} value={identifier} onChange={e => setIdentifier(e.target.value)} />
             </label>
             <ReactQuill
                 theme="snow" // You can choose other themes as well
                 value={documentContent}
                 onChange={handleChange}
+                placeholder='Add content here'
                 modules={{
                     toolbar: [
                         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
                         ['blockquote', 'code-block'],
 
-                        [{'header': 1}, {'header': 2}],               // custom button values
-                        [{'list': 'ordered'}, {'list': 'bullet'}],
-                        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-                        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-                        [{'direction': 'rtl'}],                         // text direction
+                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+                        [{ 'direction': 'rtl' }],                         // text direction
 
-                        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-                        [{'header': [1, 2, 3, 4, 5, 6, false]}],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-                        [{'color': []}, {'background': []}],          // dropdown with defaults and values
-                        [{'font': []}],
-                        [{'align': []}],
+                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults and values
+                        [{ 'font': [] }],
+                        [{ 'align': [] }],
 
                         ['clean'],                                         // remove formatting button
                         ['link', 'image', 'video']                         // link and image, video
@@ -81,11 +103,12 @@ function DocumentationEditor({document}) {
                     'background', 'font', 'align', 'link', 'image', 'video'
                 ]}
             />
-            <div className="preview" style={{marginTop: '20px', border: '1px solid #ccc', padding: '10px'}}>
+            <div className="preview" style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px' }}>
                 <h3>Document Preview:</h3>
-                <div dangerouslySetInnerHTML={{__html: documentContent}}/>
+                <div dangerouslySetInnerHTML={{ __html: documentContent }} />
             </div>
             <button onClick={handleSubmit}>Save</button>
+            <DangerButton onClick={handleDelete} text={"Delete"}></DangerButton>
         </div>
     );
 }

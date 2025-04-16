@@ -7,10 +7,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-function DocumentationList({onSelectDocument}) {
-  const [documentations, setDocumentations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+function DocumentationList({documentations, onSelectDocument}) {
+  //const [documentations, setDocumentations] = useState([]);
+  //const [loading, setLoading] = useState(true);
+  //const [error, setError] = useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const { fetchWithAuth } = useApi();
 
@@ -18,7 +18,7 @@ function DocumentationList({onSelectDocument}) {
     onSelectDocument(id);
     setSelectedIndex(id);    
   };
-
+/*
   useEffect(() => {
     const fetchDocumentations = async () => {
         try {
@@ -41,9 +41,10 @@ function DocumentationList({onSelectDocument}) {
     fetchDocumentations();
   }, []);
 
-  if (loading) {
-    return <div>Loading documentations...</div>;
-  }
+  */
+ // if (loading) {
+   // return <div>Loading documentations...</div>;
+  //}
 
 
   return (

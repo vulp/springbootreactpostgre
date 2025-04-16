@@ -43,4 +43,10 @@ public class DocumentationController {
         documentationRepository.save(documentation);
         return new ResponseEntity<>(Map.of("message", "Documentation saved successfully"), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteDocumentation(@PathVariable Long id) {
+        documentationRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
