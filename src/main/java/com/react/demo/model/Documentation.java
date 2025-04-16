@@ -19,4 +19,8 @@ public class Documentation implements Serializable {
 
     @Column(length = 1500)
     private String content;
+
+    @Column(length = 255)
+    private String identifier;
+
 }

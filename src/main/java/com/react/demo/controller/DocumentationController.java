@@ -39,6 +39,7 @@ public class DocumentationController {
     public ResponseEntity<Map<String, String>> saveDocumentation(@RequestBody @Valid DocumentationRecord documentationRecord) {
         Documentation documentation = new Documentation();
         documentation.setContent(documentationRecord.content());
+        documentation.setIdentifier(documentationRecord.identifier());
         documentationRepository.save(documentation);
         return new ResponseEntity<>(Map.of("message", "Documentation saved successfully"), HttpStatus.OK);
     }

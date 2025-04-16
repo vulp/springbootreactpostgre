@@ -6,14 +6,17 @@ import {useApi} from '../utils/api';
 
 function DocumentationEditor({document}) {
     const [documentContent, setDocumentContent] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const {logout} = useAuth();
     const {fetchWithAuth} = useApi();
 
     useEffect(() => {
-        if (document && document.content) {
+        if (document) {
             setDocumentContent(document.content);
+            setIdentifier(document.identifier)
         } else {
-            setDocumentContent(''); 
+         //   setDocumentContent(''); 
+       //     setIdentifier('');
         }
     }, [document]);
 
@@ -30,7 +33,7 @@ function DocumentationEditor({document}) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({content: documentContent}),
+                body: JSON.stringify({content: documentContent, identifier: identifier}),
             });
 
             
@@ -42,7 +45,10 @@ function DocumentationEditor({document}) {
     return (
         <div>
             <h2>Documentation Editor</h2>
-            <p>todo naming needed</p>
+            <label>
+                Identifier:
+                <input name='identifier' placeholder='name' value={identifier} onChange={e => setIdentifier(e.target.value)}/>
+            </label>
             <ReactQuill
                 theme="snow" // You can choose other themes as well
                 value={documentContent}
@@ -80,7 +86,6 @@ function DocumentationEditor({document}) {
                 <div dangerouslySetInnerHTML={{__html: documentContent}}/>
             </div>
             <button onClick={handleSubmit}>Save</button>
-            <button onClick={logout}>Logout</button>
         </div>
     );
 }

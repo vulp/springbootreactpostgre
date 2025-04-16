@@ -6,12 +6,12 @@ import {useApi} from '../utils/api';
 function DocumentationWorkspace() {
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  
   const { fetchWithAuth } = useApi();
 
   const handleSelectDocument = (id) => {  
-    console.log('set',id);
-    setSelectedDocumentId(id);
-    setSelectedDocument(null);
+    setSelectedDocument(null); 
+    setSelectedDocumentId(id);      
   }
 
     useEffect(() => {
@@ -33,7 +33,7 @@ function DocumentationWorkspace() {
             };
       
         fetchDocumentation();
-      }, [selectedDocumentId]);
+    }, [selectedDocumentId]);
 
   return (
     <div>
@@ -46,7 +46,6 @@ function DocumentationWorkspace() {
           <DocumentationEditor document={selectedDocument} />
         </div>
       </div>
-      {/* You might add a button here to create new documentation */}
     </div>
   );
 }

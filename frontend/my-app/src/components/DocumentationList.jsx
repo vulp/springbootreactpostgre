@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {useApi} from '../utils/api';
 
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
 function DocumentationList({onSelectDocument}) {
   const [documentations, setDocumentations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
   const { fetchWithAuth } = useApi();
+
+  const handleListItemClick = (id) => {   
+    onSelectDocument(id);
+    setSelectedIndex(id);    
+  };
 
   useEffect(() => {
     const fetchDocumentations = async () => {
@@ -35,20 +47,27 @@ function DocumentationList({onSelectDocument}) {
 
 
   return (
-    <div>
-      <h2>List of Documentations</h2>
-      {documentations.length > 0 ? (
-        <ul>
-          {documentations.map(doc => (
-            <li key={doc.id} onClick={() => onSelectDocument(doc.id)}> 
-              {doc.id}             
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No documentations found.</p>
-      )}
-    </div>
+    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    {documentations.length > 0 ? (
+    <List component="nav" aria-label="main mailbox folders">
+      {documentations.map(doc => (
+        <ListItemButton
+          key={doc.id}
+          selected={doc.id === selectedIndex}                
+          onClick={(event) => handleListItemClick(doc.id)}
+      >
+        <ListItemIcon>
+          
+        </ListItemIcon>
+        <ListItemText primary={doc.identifier} secondary={doc.id}/>
+      </ListItemButton>
+    ))}
+    </List>
+    ) : (
+      <p>"plaa no cont"</p>
+    )}
+  </Box>
+    
   );
 }
 
