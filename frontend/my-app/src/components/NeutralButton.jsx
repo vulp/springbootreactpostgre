@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../hooks/useAuth.jsx';
 import { Button as MuiButton } from '@mui/material'; // Rename MUI's Button to avoid conflict
 
 const Button = styled.button`
@@ -28,11 +27,10 @@ const ButtonTest = styled(MuiButton)`
   }
 `;
 
-function NeutralButton({onClick}) {
-    const { logout } = useAuth();
+function NeutralButton({onClick, text}) {
 
     return (
-        <ButtonTest onClick={onClick}>Logout</ButtonTest>
+        <ButtonTest onClick={onClick}>{text}</ButtonTest>
     )
 }
 
