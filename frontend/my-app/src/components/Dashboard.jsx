@@ -2,41 +2,91 @@ import React, { useState, useEffect } from 'react';
 import Charts from './Charts';
 import NeutralButton from './NeutralButton.jsx';
 import CreateChartDialog from './CreateChartDialog.jsx';
+import ModifyChartDialog from './ModifyChartDialog.jsx';
+
+import { useApi } from '../utils/api';
 
 function Dashboard() {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-    const [chartsData, setChartsData] = useState([]); // Assuming Charts component receives data as prop
+    const [isModifyDialogOpen, setIsModifyDialogOpen] = useState(false);
+    const [chartToModify, setChartToModify] = useState(); 
+    const [charts, setCharts] = useState([]);
+    const { fetchWithAuth } = useApi();
 
     const handleCreateNewChartClick = () => {
         setIsCreateDialogOpen(true);
     };
 
-    const handleCreateChartDialogClose = () => {
+    const handleDialogClose = () => {
         setIsCreateDialogOpen(false);
+        setIsModifyDialogOpen(false);
     };
 
-    //todo remove when all done
-    const data = [
-        { "date": "2025-03-20", "saves": 15 },
-        { "date": "2025-03-21", "saves": 22 },
-        { "date": "2025-03-22", "saves": 18 },
-        { "date": "2025-03-23", "saves": 25 },
-        { "date": "2025-03-24", "saves": 30 }
-    ];
+    const fetchCharts = async () => {
+        try {
+            const response = await fetchWithAuth('http://localhost:8080/api/charts/list', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            setCharts([]);
+            const datas = await response.json();
+            //const parsedData = JSON.parse(datas[0].jsonData);
+           console.log(datas);
+            setCharts(datas);
+            // setDocumentations(data);
+            // setLoading(false);
+        } catch (e) {
+            console.log(e);
+            // setError(e.message);
+            // setLoading(false);
+        }
+    };
 
+    useEffect(() => {
+        fetchCharts();
+    }, []);
+
+    const refreshList = () => {
+        fetchCharts();
+    };
+
+    const handleDoubleClickChart = (id) => {
+        console.log('asdfkljasdf',id);
+
+        const foundChart = charts.find(chart => chart.id === id);
+        setChartToModify(foundChart);
+        setIsModifyDialogOpen(true);
+    }
 
     return (
         <div>
             <h1>Dashboard</h1>
             <NeutralButton text={"New"} onClick={handleCreateNewChartClick}></NeutralButton>
-            <Charts isNew={false} headerText={"Chart name here after fetch TODO"} data={data} editing={false}/>
+            
+            {charts.length > 0 ? (
+                charts.map(chart => (
+                    <div key={chart.id} onDoubleClick={() => handleDoubleClickChart(chart.id)}>
+                        <Charts isNew={false} headerText={"Chart name here after fetch TODO"} editing={false} chart={chart} width={50}/>
+                    </div>
+                ))
+            ) : (
+                <p>"plaa no cont"</p>
+            )}
+
             <CreateChartDialog
                 open={isCreateDialogOpen}
-                onClose={handleCreateChartDialogClose}
-            >
-
-            </CreateChartDialog>
+                onClose={handleDialogClose} refreshList={refreshList}
+            />
+            <ModifyChartDialog
+                open={isModifyDialogOpen}
+                onClose={handleDialogClose} refreshList={refreshList}                
+                chart={chartToModify}
+            />
+            
         </div>
+
     );
 }
 

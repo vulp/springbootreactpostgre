@@ -23,34 +23,24 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-function Charts({ isNew, headerText, data, editing, onChange }) {
+function Charts({ isNew, headerText, editing, onChange, chart, width }) {
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(editing);
     const [error, setError] = useState(null);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [inputText, setInputText] = useState('');
     const [chartType, setChartType] = useState('line')
 
-
-    /*
-        const data = [
-            { "date": "2025-03-20", "saves": 15 },
-            { "date": "2025-03-21", "saves": 22 },
-            { "date": "2025-03-22", "saves": 18 },
-            { "date": "2025-03-23", "saves": 25 },
-            { "date": "2025-03-24", "saves": 30 }
-        ];*/
-
-
     useEffect(() => {
-
-        setTimeout(() => {
-            setChartData(data);
+        setTimeout(() => {       
+        
+            if (chart) {
+                console.log('chart found',chart);
+                const parsed = JSON.parse(chart.jsonData);
+                setChartData(parsed)
+                //setChartData(data);                
+                //setInputText(JSON.stringify(parsed));
+            }
             setLoading(false);
-            setInputText(JSON.stringify(data));
         }, 1000);
     }, []);
 
@@ -62,41 +52,15 @@ function Charts({ isNew, headerText, data, editing, onChange }) {
         return <div>Error loading chart data: {error.message}</div>;
     }
 
-    const handleChange = () => {
-        console.log('data');
-
-        try {
-            const parsedData = JSON.parse(inputText);
-            setChartData(parsedData);
-            setIsEditing(false);
-        } catch (e) {
-            console.log(e);
-            setIsEditing(true);
-        }
-    };
-
     const handleInputChange = (value) => {
-        setInputText(value);
-        testData(inputText);
+        testData(value);        
     };
 
-    const handleCancel = () => {
-        console.log('data');
-
+    const testData = (value) => {
         try {
-            // const parsedData = JSON.parse(inputText);
-            setInputText(JSON.stringify(chartData));
-            setIsEditing(false);
-        } catch (e) {
-            console.log(e);
-            setIsEditing(true);
-        }
-    };
-
-    const testData = () => {
-        try {
-            const parsedData = JSON.parse(inputText);
+            const parsedData = JSON.parse(value);
             setChartData(parsedData);
+            onChange(parsedData);
         } catch (e) {
             console.log(e);
         }
@@ -104,11 +68,11 @@ function Charts({ isNew, headerText, data, editing, onChange }) {
 
     return (
         <div>
-            <h2>{headerText}</h2>
-            <ResponsiveContainer width="40%" height={300}>
+            <p>{headerText}</p>
+            <ResponsiveContainer width={`${width}%`} height={300}>
                 {chartType === 'line' ? (
                     <LineChart
-                        width={700}
+                        width={500}
                         height={300}
                         data={chartData}
                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -123,7 +87,7 @@ function Charts({ isNew, headerText, data, editing, onChange }) {
                     </LineChart>
                 ) : (
                     <BarChart
-                        width={700}
+                        width={500}
                         height={300}
                         data={chartData}
                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -142,7 +106,7 @@ function Charts({ isNew, headerText, data, editing, onChange }) {
                 <>
                     <TextField id="outlined-basic" sx={{
                         '& .MuiInputBase-input': {
-                            resize: 'both', width: 700
+                            resize: 'both', width: 500
                         },
                     }} rows={4} multiline label="Outlined" variant="outlined" onChange={event => handleInputChange(event.target.value)} slotProps={{
                         input: {
@@ -150,15 +114,26 @@ function Charts({ isNew, headerText, data, editing, onChange }) {
                                 resize: 'both',
                             },
                         },
-                    }} value={inputText} />
+                    }} value={JSON.stringify(chartData)}/>
 
-                    <br />
-                    {!isNew && (
-                        <>
-                            <EditButton text={"Save"} className="mt-4" onClick={() => handleChange()}></EditButton>
-                            <EditButton text={"Cancel"} className="mt-4" onClick={() => handleCancel()}></EditButton>
-                        </>
-                    )}
+                    <br />                   
+                </>
+            )}
+             {isNew && !isEditing && (
+                <>
+                    <TextField id="outlined-basic" sx={{
+                        '& .MuiInputBase-input': {
+                            resize: 'both', width: 500
+                        },
+                    }} rows={4} multiline label="Outlined" variant="outlined" onChange={event => handleInputChange(event.target.value)} slotProps={{
+                        input: {
+                            style: {
+                                resize: 'both',
+                            },
+                        },
+                    }} />
+
+                    <br />                   
                 </>
             )}
             {!isEditing && (
@@ -172,10 +147,7 @@ function Charts({ isNew, headerText, data, editing, onChange }) {
                     >
                         <MenuItem value={'line'}>Line</MenuItem>
                         <MenuItem value={'bar'}>Bar</MenuItem>
-                    </Select>
-                    {!isNew && (
-                        <EditButton text={"Edit Data"} className="mt-4" onClick={() => setIsEditing(true)}></EditButton>
-                    )}
+                    </Select>                    
                 </>
             )}
 
