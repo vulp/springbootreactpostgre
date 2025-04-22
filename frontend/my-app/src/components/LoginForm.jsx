@@ -5,7 +5,7 @@ function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const { login, loginWithKeycloak, auth, setLoginMethod, initKeycloak } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,6 +16,19 @@ function LoginForm() {
     } catch (err) {
       setError(err.message || 'Login failed');
     }
+  };
+  //const authContext = useAuth();
+  const handleKeycloakLogin = () => {
+    console.log(auth)
+
+    if (auth.initialized && auth.loginMethod === 'keycloak') {
+      loginWithKeycloak();
+    } else {
+      setLoginMethod('keycloak');
+      //initKeycloak();
+      loginWithKeycloak();
+    }
+
   };
 
   return (
@@ -46,6 +59,11 @@ function LoginForm() {
         </div>
         <button type="submit">Log In</button>
       </form>
+      <hr />
+      <div>
+        <h3>Login with Keycloak</h3>
+        <button onClick={handleKeycloakLogin}>Log In with Keycloak</button>
+      </div>
     </div>
   );
 }

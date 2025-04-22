@@ -38,8 +38,9 @@ import {
 } from '@mui/material';
 
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated } = useAuth();
-    return isAuthenticated ? children : <Navigate to="/login" />;
+    const { isAuthenticated, auth } = useAuth();
+    console.log('is auth',isAuthenticated, auth);
+    return auth.isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 const drawerWidth = 240;
@@ -51,7 +52,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-       // marginLeft: `-${drawerWidth}px`,
+        // marginLeft: `-${drawerWidth}px`,
         variants: [
             {
                 props: ({ open }) => open,
@@ -79,7 +80,7 @@ function App() {
 }
 
 function AppContent() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, auth } = useAuth();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -109,92 +110,92 @@ function AppContent() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            
-            <AppBar position="fixed" open={open}>
-            {isAuthenticated && (
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
 
-                        edge="start"
-                        sx={[
-                            {
-                                mr: 2,
-                            },
-                            open && { display: 'none' },
-                        ]}
-                    >
-                        <Menu />
-                    </IconButton>
-                </Toolbar>
+            <AppBar position="fixed" open={open}>
+                {auth.isAuthenticated && (
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+
+                            edge="start"
+                            sx={[
+                                {
+                                    mr: 2,
+                                },
+                                open && { display: 'none' },
+                            ]}
+                        >
+                            <Menu />
+                        </IconButton>
+                    </Toolbar>
                 )}
             </AppBar>
-            {isAuthenticated && (
-            <Drawer
-                sx={{
-                    width: 240,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+            {auth.isAuthenticated && (
+                <Drawer
+                    sx={{
                         width: 240,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="persistent"
-                anchor="left"
-                open={open}
-            >
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {navItems.map((item) => (
-                        <ListItem key={item.text} disablePadding>
-                            <ListItemButton component={Link} to={item.to}>
-                                <ListItemIcon>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} />
-                            </ListItemButton>
-                        </ListItem>
-                    )
-                    )
-                    }
-                </List>
-            </Drawer>
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: 240,
+                            boxSizing: 'border-box',
+                        },
+                    }}
+                    variant="persistent"
+                    anchor="left"
+                    open={open}
+                >
+                    <DrawerHeader>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
+                        </IconButton>
+                    </DrawerHeader>
+                    <Divider />
+                    <List>
+                        {navItems.map((item) => (
+                            <ListItem key={item.text} disablePadding>
+                                <ListItemButton component={Link} to={item.to}>
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                </ListItemButton>
+                            </ListItem>
+                        )
+                        )
+                        }
+                    </List>
+                </Drawer>
             )}
             <Main open={open}>
-          
-                        <Routes>
-                            <Route path="/login" element={<LoginForm />} />
-                            <Route
-                                path="/"
-                                element={
-                                    <ProtectedRoute>
-                                        <Home />
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route
-                                path="/dashboard"
-                                element={
-                                    <ProtectedRoute>
-                                        <Dashboard />
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route
-                                path="/documentationWorkspace/*"
-                                element={
-                                    <ProtectedRoute>
-                                        <DocumentationWorkspace />
-                                    </ProtectedRoute>
-                                }
-                            />
-                        </Routes>
-              
+
+                <Routes>
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/documentationWorkspace/*"
+                        element={
+                            <ProtectedRoute>
+                                <DocumentationWorkspace />
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
+
             </Main>
 
         </Box>

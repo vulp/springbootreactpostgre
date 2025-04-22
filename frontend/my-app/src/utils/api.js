@@ -2,16 +2,17 @@ import { Logout } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth.jsx';
 
 export const useApi = () => {
-    const { token, logout } = useAuth();
+    const { token, logout, auth } = useAuth();
 
     const fetchWithAuth = async (url, options = {}) => {
+        console.log(auth, token)
         const headers = {
             ...options.headers,
             'Content-Type': 'application/json',
         };
 
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
+        if (auth.token) {
+            headers['Authorization'] = `Bearer ${auth.token}`;
             console.log(headers);
         }
 
