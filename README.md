@@ -20,4 +20,5 @@ https://recharts.org/en-US/
 
 todo next how to change chart type on the fly
 
-## Todo css learning...
+## keycloak
+.\kc.bat start-dev

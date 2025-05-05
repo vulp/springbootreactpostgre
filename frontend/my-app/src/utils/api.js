@@ -13,6 +13,11 @@ export const useApi = () => {
 
         if (auth.token) {
             headers['Authorization'] = `Bearer ${auth.token}`;
+            if(auth.loginMethod === 'custom-jwt') {
+                headers['old-auth'] = `custom-jwt`;
+            } else {
+                headers['new-auth'] = `keycloak`;
+            }
             console.log(headers);
         }
 
