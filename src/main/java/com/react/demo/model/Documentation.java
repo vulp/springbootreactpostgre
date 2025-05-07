@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "_documentation")
@@ -22,5 +23,8 @@ public class Documentation implements Serializable {
 
     @Column(length = 255)
     private String identifier;
+
+    @Column(length = 255)
+    private String creatorUuid;
 
 }

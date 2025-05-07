@@ -13,6 +13,7 @@ function DocumentationWorkspace() {
   const { fetchWithAuth } = useApi();
 
   const handleSelectDocument = (id) => {
+    console.log('select', id);
     setSelectedDocument(null);
     setSelectedDocumentId(id);
   }
@@ -47,15 +48,17 @@ function DocumentationWorkspace() {
   useEffect(() => {
     const fetchDocumentation = async () => {
       try {
-        const response = await fetchWithAuth(`http://localhost:8080/api/documentation/${selectedDocumentId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-        const data = await response.json();
-        console.log('jepa', data);
-        setSelectedDocument(data);
+        if (selectedDocumentId ?? false) {
+          const response = await fetchWithAuth(`http://localhost:8080/api/documentation/${selectedDocumentId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+          const data = await response.json();
+          console.log('jepa', data);
+          setSelectedDocument(data);
+        }
 
       } catch (e) {
         console.error(e);

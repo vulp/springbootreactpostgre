@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +30,8 @@ public class DocumentationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Documentation> getDocumentation(@PathVariable Object id) {
+    @PreAuthorize("@customPermissionEvaluator.hasPermission(#auth,#id,T(com.react.demo.model.Documentation).simpleName, 'READ')")
+    public ResponseEntity<Documentation> getDocumentation(@PathVariable Long id, Authentication auth) {
         if(id instanceof Long) {
             Documentation documentation = documentationRepository.findById((Long) id).orElse(null);
             return new ResponseEntity<>(documentation, HttpStatus.OK);
@@ -39,7 +41,9 @@ public class DocumentationController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Documentation>> getDocumentationList() {
+    @PreAuthorize("@customPermissionEvaluator.hasPermission(#auth,null, 'READ')")
+    public ResponseEntity<List<Documentation>> getDocumentationList(@AuthenticationPrincipal Jwt jwt, Authentication auth) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//this is just for test purposes like preauthorize admin level
         List<Documentation> documentationList = documentationRepository.findAll();
         return new ResponseEntity<>(documentationList, HttpStatus.OK);
     }
