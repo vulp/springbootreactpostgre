@@ -4,6 +4,8 @@ import LoginForm from './components/LoginForm';
 import Home from './components/Home.jsx';
 import DocumentationWorkspace from './components/DocumentationWorkspace';
 import Dashboard from './components/Dashboard.jsx';
+import ProfileMenu from './components/ProfileMenu.jsx';
+import Profile from './components/Profile.jsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,6 +20,7 @@ import {
 } from '@mui/icons-material'
 
 import {
+    Avatar,
     AppBar,
     Toolbar,
     Box,
@@ -31,6 +34,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Tooltip,
     useMediaQuery,
     useTheme,
     styled,
@@ -39,7 +43,7 @@ import {
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated, auth } = useAuth();
-    console.log('is auth',isAuthenticated, auth);
+    console.log('is auth', isAuthenticated, auth);
     return auth.isAuthenticated ? children : <Navigate to="/login" />;
 };
 
@@ -92,6 +96,13 @@ function AppContent() {
         setOpen(false);
     };
 
+    const getProfileLetter = () => {
+        if (!auth || auth.name === 0) {
+            return "";
+        }
+        return auth.name.charAt(0).toUpperCase();
+    };
+
     const navItems = [
         { text: 'Home', to: '/', icon: <HomeFilled /> },
         { text: 'Dashboard', to: '/dashboard', icon: <SpaceDashboard /> },
@@ -129,6 +140,12 @@ function AppContent() {
                         >
                             <Menu />
                         </IconButton>
+                        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                            Sandbox
+                        </Typography>
+                        <ProfileMenu profileLetter={getProfileLetter()}>
+
+                        </ProfileMenu>
                     </Toolbar>
                 )}
             </AppBar>
@@ -191,6 +208,14 @@ function AppContent() {
                         element={
                             <ProtectedRoute>
                                 <DocumentationWorkspace />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
                             </ProtectedRoute>
                         }
                     />

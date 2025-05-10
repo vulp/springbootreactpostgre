@@ -15,7 +15,7 @@ function Home() {
     return (
         <div>
             <h1>Welcome Home!</h1>
-            <NeutralButton onClick={logout} text={"Logout"}></NeutralButton>
+            
         </div>
     );
 }
