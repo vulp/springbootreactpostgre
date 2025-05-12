@@ -1,5 +1,5 @@
 # Jwt based React login to Spring boot + Spring Security + database for users
-This is for learning purpose so hardcoded passwords shouldn't be used
+This is just for learning purposes and sandbox for all kinds of experiments
 
 ## DemoApplication
 Initializes default user so things can be tested
@@ -23,4 +23,6 @@ todo next how to change chart type on the fly
 ## keycloak
 .\kc.bat start-dev
 
+## Screenshots
+Profile and some navigation
 ![Screenshot](img1.png)
