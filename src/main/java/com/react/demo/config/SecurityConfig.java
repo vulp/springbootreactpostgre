@@ -7,9 +7,11 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
@@ -45,13 +47,17 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@PropertySource("classpath:keycloak.properties")
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    private final String keycloakRealmAddress = "http://localhost:8081/realms/demo";
+    @Value("${keycloak.auth-server-url}")
+    private String authServerUrl;
+    @Value("${keycloak.realm}")
+    private String realm;
 
     public SecurityConfig(JwtService jwtService, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.jwtService = jwtService;
@@ -130,7 +136,8 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return JwtDecoders.fromIssuerLocation(keycloakRealmAddress);
+        final String url = String.join("",authServerUrl,"/realms/",realm);
+        return JwtDecoders.fromIssuerLocation(url);
     }
 
     static class CustomAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {

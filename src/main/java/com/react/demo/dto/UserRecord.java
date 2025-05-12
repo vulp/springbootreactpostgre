@@ -1,4 +1,6 @@
 package com.react.demo.dto;
 
-public record UserRecord(String givenName, String familyName) {
+import jakarta.validation.constraints.Size;
+
+public record UserRecord(@Size(max = 50) String givenName, @Size(max = 50) String familyName) {
 }

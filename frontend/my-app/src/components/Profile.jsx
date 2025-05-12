@@ -6,12 +6,16 @@ import {
     CardContent,
     Container,
     Grid,
-    TextField
+    TextField,
+    Button
+
 } from '@mui/material';
 
 function Profile() {
     const { fetchWithAuth } = useApi();
     const [user, setUser] = useState({});
+    const [initialUserData, setInitialUserData] = useState({}); 
+    const [loading, setLoading] = React.useState(true);
 
     const fetchUserDetails = async () => {
         try {
@@ -21,9 +25,13 @@ function Profile() {
                     'Content-Type': 'application/json',
                 }
             });
-            const data = await response.json();
-            setUser(data);
-            console.log('data', data, user);
+            if(response) {
+                const data = await response.json();
+                setUser(data);
+                setInitialUserData(data);
+            }
+
+            setLoading(false);
         } catch (e) {
             setError(e.message);
         }
@@ -33,6 +41,38 @@ function Profile() {
         fetchUserDetails();
     }, {});
 
+    const handleSave = async () => {
+
+        setLoading(true);
+        try {
+            const response = await fetchWithAuth('http://localhost:8080/api/users/user/details', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user),
+            });
+
+            //TODO needs refreshing etc
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCancel = () => {
+        setUser(initialUserData);
+    };
+
+    const handleChange = (event) => {
+        const { name, value} = event.target;
+        setUser(prevData => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     return (
         <Container>
@@ -43,30 +83,38 @@ function Profile() {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="firstName"
-                                name="firstName"
+                                label="givenName"
+                                name="givenName"
                                 value={user.givenName}
                                 slotProps={{
                                     inputLabel: {
                                         shrink: true,
                                     },
                                 }}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="lastName"
-                                name="lastName"
+                                label="familyName"
+                                name="familyName"
                                 value={user.familyName}
                                 slotProps={{
                                     inputLabel: {
                                         shrink: true,
                                     },
                                 }}
+                                onChange={handleChange}
                             />
                         </Grid>
                     </Grid>
+                    <Button variant="contained" color="primary" onClick={handleSave} loading={loading}>
+                        Save
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={handleCancel} loading={loading}>
+                        Cancel
+                    </Button>
                 </CardContent>
             </Card>
         </Container>
