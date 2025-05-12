@@ -22,3 +22,5 @@ todo next how to change chart type on the fly
 
 ## keycloak
 .\kc.bat start-dev
+
+![Screenshot](img1.png)
