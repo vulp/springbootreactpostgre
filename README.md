@@ -20,8 +20,13 @@ https://recharts.org/en-US/
 
 todo next how to change chart type on the fly
 
-## keycloak
+## Keycloak
+Testing popular IAM
+login, user updating etc
+
+to start got to the keycloak folder and example:
 .\kc.bat start-dev
+or start using Docker
 
 ## Screenshots
 Profile and some navigation

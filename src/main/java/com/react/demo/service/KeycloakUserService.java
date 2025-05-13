@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 public class KeycloakUserService {
 
@@ -48,6 +50,10 @@ public class KeycloakUserService {
 
         if (updatedData.familyName() != null) {
             userRepresentation.setLastName(updatedData.familyName());
+        }
+
+        if(updatedData.phone() != null) {
+            userRepresentation.getAttributes().put("phone", Collections.singletonList(updatedData.phone()));
         }
 
         userResource.update(userRepresentation);

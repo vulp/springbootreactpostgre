@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useApi } from '../utils/api';
 
+import ColorTheme from './ColorTheme';
+
 import {
     Card,
     CardContent,
@@ -79,7 +81,7 @@ function Profile() {
             <h1>Profile</h1>
             <Card>
                 <CardContent>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2} direction="column">
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
@@ -108,6 +110,20 @@ function Profile() {
                                 onChange={handleChange}
                             />
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="phone"
+                                name="phone"
+                                value={user.phone}
+                                slotProps={{
+                                    inputLabel: {
+                                        shrink: true,
+                                    },
+                                }}
+                                onChange={handleChange}
+                            />
+                        </Grid>
                     </Grid>
                     <Button variant="contained" color="primary" onClick={handleSave} loading={loading}>
                         Save
@@ -117,6 +133,8 @@ function Profile() {
                     </Button>
                 </CardContent>
             </Card>
+            <ColorTheme>
+            </ColorTheme>
         </Container>
     )
 }

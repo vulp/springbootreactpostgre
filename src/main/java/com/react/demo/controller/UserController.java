@@ -24,11 +24,11 @@ public class UserController {
     @GetMapping("/user/details")
     public ResponseEntity getUser(@AuthenticationPrincipal Jwt jwt) {
         if (jwt != null) {
-            UserRecord user = new UserRecord(jwt.getClaim("given_name"), jwt.getClaim("family_name"));
+            UserRecord user = new UserRecord(jwt.getClaim("given_name"), jwt.getClaim("family_name"),jwt.getClaim("phone"));
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             //TODO get from userDetails or remove custom auth
-            UserRecord user = new UserRecord("tset1", "test2");
+            UserRecord user = new UserRecord("tset1", "test2","");
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Home from './components/Home.jsx';
@@ -9,6 +9,7 @@ import Profile from './components/Profile.jsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import {
     Menu,
@@ -43,7 +44,7 @@ import {
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated, auth } = useAuth();
-    console.log('is auth', isAuthenticated, auth);
+    //console.log('is auth', isAuthenticated, auth);
     return auth.isAuthenticated ? children : <Navigate to="/login" />;
 };
 
@@ -72,12 +73,51 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
 );
 
+export const ThemeContext = createContext();
+const AppThemeProvider = ({ children }) => {
+    const [hue, setHue] = useState(233);
+    const [colorMode, setColorMode] = useState('dark');
+    const [userHsl, setUserHsl] = useState({
+        h: 250,
+        s: 0.03,
+        l: 0.27,
+        a: 1,
+    });
+
+    console.log(userHsl);
+
+    const theme = useMemo(() =>
+        createTheme({
+            palette: {
+                mode: colorMode,
+                primary: {
+                    main: `hsl(${userHsl.h}, 70%, 30%)`,
+                },
+                background: {
+                    default: `hsla(${userHsl.h}, ${userHsl.s * 100}%, ${userHsl.l * 100}%, ${userHsl.a})`,
+                }
+            },
+        }),
+        [userHsl]
+    );
+
+    return (
+        <ThemeContext.Provider value={{ hue, setHue, userHsl, setUserHsl, colorMode, setColorMode }}>
+            <ThemeProvider theme={theme}>
+                {children}
+            </ThemeProvider>
+        </ThemeContext.Provider>
+    );
+};
+
 
 function App() {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <AppContent />
+                <AppThemeProvider>
+                    <AppContent />
+                </AppThemeProvider>
             </AuthProvider>
         </BrowserRouter>
     );
