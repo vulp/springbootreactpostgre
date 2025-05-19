@@ -36,7 +36,8 @@ public class KeycloakUserService {
 
     /**
      * Get user based on jwt and then updates the changes
-     * @param jwt user jwt
+     *
+     * @param jwt         user jwt
      * @param updatedData changes from profile
      */
     public void updateUser(Jwt jwt, UserRecord updatedData) {
@@ -52,8 +53,16 @@ public class KeycloakUserService {
             userRepresentation.setLastName(updatedData.familyName());
         }
 
-        if(updatedData.phone() != null) {
+        if (updatedData.phone() != null) {
             userRepresentation.getAttributes().put("phone", Collections.singletonList(updatedData.phone()));
+        }
+
+        if (updatedData.hsl() != null) {
+            userRepresentation.getAttributes().put("hsl", Collections.singletonList(updatedData.hsl()));
+        }
+
+        if (updatedData.colorMode() != null) {
+            userRepresentation.getAttributes().put("colorMode", Collections.singletonList(updatedData.colorMode()));
         }
 
         userResource.update(userRepresentation);

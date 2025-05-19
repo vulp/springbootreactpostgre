@@ -75,16 +75,29 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 export const ThemeContext = createContext();
 const AppThemeProvider = ({ children }) => {
+    const { isAuthenticated, auth } = useAuth();
     const [hue, setHue] = useState(233);
     const [colorMode, setColorMode] = useState('dark');
-    const [userHsl, setUserHsl] = useState({
+    const [userHsl, setUserHsl] = useState(auth.hsl ? JSON.parse(auth.hsl) : {
         h: 250,
         s: 0.03,
         l: 0.27,
         a: 1,
     });
 
-    console.log(userHsl);
+    console.log(userHsl, auth);
+    if (auth.isAuthenticated) {
+        //TODO clean
+
+        //  setUserHsl(JSON.parse(auth.hsl))
+        let authHsl = JSON.parse(auth.hsl);
+        console.log(authHsl);
+        if (authHsl.h != userHsl.h && authHsl.s != userHsl.s &&
+            authHsl.l != userHsl.l && authHsl.a != userHsl.a
+        ) {
+            console.log('eri');
+        }
+    }
 
     const theme = useMemo(() =>
         createTheme({

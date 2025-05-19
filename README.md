@@ -28,6 +28,9 @@ to start got to the keycloak folder and example:
 .\kc.bat start-dev
 or start using Docker
 
+## Profile page
+user can change some user details and UI theme
+
 ## Screenshots
 Profile and some navigation
 ![Screenshot](img1.png)

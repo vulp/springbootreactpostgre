@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: false,
         token: null,
         loginMethod: localStorage.getItem('loginMethod') || null,
-        name:''
+        name:'',
+        hsl:'',
+        colorMode:'',
     });
 
 
@@ -70,9 +72,10 @@ export const AuthProvider = ({ children }) => {
                         isAuthenticated: authenticated,
                         token: keycloak.token,
                         loginMethod: 'keycloak',
-                        name:keycloak.tokenParsed.name
+                        name:keycloak.tokenParsed.name,
+                        hsl:keycloak.tokenParsed.hsl,
+                        colorMode:keycloak.tokenParsed.colorMode,
                     });
-                    console.log(keycloak.name, keycloak)                    
                 })
                 .catch(error => {
                     console.error('Keycloak initialization error', error);
