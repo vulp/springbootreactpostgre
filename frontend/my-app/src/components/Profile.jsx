@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useApi } from '../utils/api';
 
 import ColorTheme from './ColorTheme';
+import Notification from './Notification';
+
 import { ThemeContext } from '../App';
 
 import {
@@ -22,6 +24,7 @@ function Profile() {
     const [loading, setLoading] = React.useState(true);
     const { userHsl, setUserHsl } = useContext(ThemeContext);
     const { colorMode, setColorMode } = useContext(ThemeContext);
+    const [saveNotification, setSaveNotification] = React.useState(false);
 
     const fetchUserDetails = async () => {
         try {
@@ -66,8 +69,6 @@ function Profile() {
 
         setThemeToUse();
 
-
-
         try {
             const response = await fetchWithAuth('http://localhost:8080/api/users/user/details', {
                 method: 'PUT',
@@ -76,6 +77,8 @@ function Profile() {
                 },
                 body: JSON.stringify(user),
             });
+
+            setSaveNotification(true);
 
             //TODO needs refreshing etc
 
@@ -87,7 +90,11 @@ function Profile() {
     };
 
     const handleCancel = () => {
-        setUser(initialUserData);
+        setUser(initialUserData);        
+    };
+
+    const handleCloseNotification = () => {
+        setSaveNotification(false);
     };
 
     const handleChange = (event) => {
@@ -162,7 +169,9 @@ function Profile() {
                     </Button>
                 </CardContent>
             </Card>
+            <Notification openNotification={saveNotification} closeNotification={handleCloseNotification} text="Saved">
 
+            </Notification>
         </Container>
     )
 }
