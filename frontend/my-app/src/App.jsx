@@ -84,21 +84,7 @@ const AppThemeProvider = ({ children }) => {
         l: 0.27,
         a: 1,
     });
-
-    console.log(userHsl, auth);
-    if (auth.isAuthenticated) {
-        //TODO clean
-
-        //  setUserHsl(JSON.parse(auth.hsl))
-        let authHsl = JSON.parse(auth.hsl);
-        console.log(authHsl);
-        if (authHsl.h != userHsl.h && authHsl.s != userHsl.s &&
-            authHsl.l != userHsl.l && authHsl.a != userHsl.a
-        ) {
-            console.log('eri');
-        }
-    }
-
+ 
     const theme = useMemo(() =>
         createTheme({
             palette: {
@@ -166,7 +152,6 @@ function AppContent() {
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     }));

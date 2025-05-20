@@ -10,7 +10,8 @@ import {
     Container,
     Grid,
     TextField,
-    Button
+    Button,
+    Typography
 
 } from '@mui/material';
 
@@ -44,7 +45,7 @@ function Profile() {
 
     useEffect(() => {
         fetchUserDetails();
-    }, {});
+    }, []);
 
 
     const setThemeToUse = () => {
@@ -65,7 +66,7 @@ function Profile() {
 
         setThemeToUse();
 
-        
+
 
         try {
             const response = await fetchWithAuth('http://localhost:8080/api/users/user/details', {
@@ -146,6 +147,9 @@ function Profile() {
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Theme
+                            </Typography>
                             <ColorTheme>
                             </ColorTheme>
                         </Grid>

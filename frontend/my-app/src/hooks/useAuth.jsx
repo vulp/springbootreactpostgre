@@ -19,12 +19,6 @@ export const AuthProvider = ({ children }) => {
         colorMode:'',
     });
 
-
-    // useEffect(() => {
-    //    localStorage.setItem('token', token || '');
-    //     setIsAuthenticated(!!token);
-    //}, [token]);
-
     useEffect(() => {
         if (auth.loginMethod === 'custom-jwt' && auth.token) {
             localStorage.setItem('token', auth.token);
@@ -35,16 +29,14 @@ export const AuthProvider = ({ children }) => {
     }, [auth.token, auth.loginMethod]);
 
     useEffect(() => {
-        // Initialize based on the stored login method or default to Keycloak
         const storedLoginMethod = localStorage.getItem('loginMethod');
 
         if (storedLoginMethod === 'keycloak') {
             initKeycloak();
         } else {
-            // Attempt to initialize custom JWT (e.g., check for existing token)
             const storedToken = localStorage.getItem('token');
             if (storedToken) {
-                // You might want to add a check here to validate the token with your backend
+             
                 setAuth(prevAuth => ({
                     ...prevAuth,
                     initialized: true,
@@ -53,7 +45,7 @@ export const AuthProvider = ({ children }) => {
                     loginMethod: 'custom-jwt',
                 }));
             } else {
-                setAuth(prevAuth => ({ ...prevAuth, initialized: true })); // No token found
+                setAuth(prevAuth => ({ ...prevAuth, initialized: true }));
             }
         }
     }, []);
@@ -63,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     }, [setAuth]);
 
     const initKeycloak = useCallback(() => {
-        console.log(keycloak);
+        
         if (!keycloak.didInitialize) {
             keycloak.init({ onLoad: 'check-sso' })
                 .then(authenticated => {
@@ -72,7 +64,7 @@ export const AuthProvider = ({ children }) => {
                         isAuthenticated: authenticated,
                         token: keycloak.token,
                         loginMethod: 'keycloak',
-                        name:keycloak.tokenParsed.name,
+                        name:keycloak.tokenParsed.name ? keycloak.tokenParsed.name : '',
                         hsl:keycloak.tokenParsed.hsl,
                         colorMode:keycloak.tokenParsed.colorMode,
                     });
@@ -85,7 +77,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const loginWithKeycloak = useCallback(() => {
-        console.log(keycloak)
+       
         if (!keycloak.didInitialize) {
             initKeycloak();
         }
@@ -114,33 +106,12 @@ export const AuthProvider = ({ children }) => {
                 token: data.token,
                 loginMethod: 'custom-jwt',
             });
-            console.log('login',data);
             navigate('/');
         } catch (error) {
             console.error('Custom JWT Login error:', error);
             throw error;
         }
     }, [navigate]);
-
-    /*
-        const login = async (username, password) => {
-            const response = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-    
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData?.message || 'Login failed');
-            }
-    
-            const data = await response.json();
-            setToken(data.token);
-            navigate('/');
-        };*/
 
     const logout = useCallback(() => {
         if (auth.loginMethod === 'keycloak') {
@@ -150,13 +121,6 @@ export const AuthProvider = ({ children }) => {
             navigate('/login');
         }
     }, [auth.loginMethod, navigate]);
-
-    /*
-        const logout = () => {
-            console.log('Logout')
-            setToken(null);
-            navigate('/login');
-        };*/
 
     const getToken = useCallback(() => auth.token, [auth.token]);
 
@@ -172,11 +136,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={contextValue}>
-            {!auth.initialized ? <div>Loading Authentication...</div> : children}
-            {/*
-        <AuthContext.Provider value={{ token, isAuthenticated, login, logout }}>
-        {children}
-        */}
+            {!auth.initialized ? <div>Loading Authentication...</div> : children}  
         </AuthContext.Provider>
     );
 };
