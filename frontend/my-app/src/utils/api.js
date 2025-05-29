@@ -20,24 +20,24 @@ export const useApi = () => {
             }
             console.log(headers);
         }
-
+        
         try {
             const response = await fetch(url, {
                ...options,
                headers,
             });
-        
+       
             if (response && !response.ok && response.status === 401) {
                 // Handle unauthorized access (e.g., redirect to login)
                 console.error('Unauthorized access');
                 // You might want to trigger a logout here depending on your app's flow
-               
+               logout();//needs better handling
             }
-            console.log(response,'ffffffffffffffffffff');
+            
             return response;
         } catch (error) {
             console.log('error',error);
-            logout();//needs better handling
+           // logout();//needs better handling
         }
 
     };

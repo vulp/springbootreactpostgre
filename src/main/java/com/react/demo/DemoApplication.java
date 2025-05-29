@@ -1,5 +1,6 @@
 package com.react.demo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.react.demo.model.User;
 import com.react.demo.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -7,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -31,5 +33,15 @@ public class DemoApplication {
 				userRepository.save(user);
 			}
 		};
+	}
+
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper();
 	}
 }

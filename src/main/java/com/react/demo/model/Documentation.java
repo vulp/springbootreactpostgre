@@ -18,7 +18,7 @@ public class Documentation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 1500)
+    @Column(length = 3500)
     private String content;
 
     @Column(length = 255)

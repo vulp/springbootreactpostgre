@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EditButton from './EditButton.jsx';
+import AskGemmaDialog from './askGemmaDialog.jsx';
+import NeutralButton from './NeutralButton.jsx';
 
 import {
     LineChart,
@@ -18,18 +20,20 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
+
 function Charts({ isNew, headerText, editing, onChange, chart, width }) {
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(editing);
     const [error, setError] = useState(null);
-    const [chartType, setChartType] = useState('line')
+    const [chartType, setChartType] = useState('line');
+    const [isAskGemmaDialogOpen, setIsAskGemmaDialogOpen] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {       
-        
+        setTimeout(() => {
+
             if (chart) {
-                console.log('chart found',chart);
+                console.log('chart found', chart);
                 const parsed = JSON.parse(chart.jsonData);
                 setChartData(parsed)
                 //setChartData(data);                
@@ -48,7 +52,7 @@ function Charts({ isNew, headerText, editing, onChange, chart, width }) {
     }
 
     const handleInputChange = (value) => {
-        testData(value);        
+        testData(value);
     };
 
     const testData = (value) => {
@@ -60,6 +64,14 @@ function Charts({ isNew, headerText, editing, onChange, chart, width }) {
             console.log(e);
         }
     }
+
+    const handleDialogClose = () => {
+        setIsAskGemmaDialogOpen(false);
+    };
+
+    const handleOpenAskGemma = () => {
+        setIsAskGemmaDialogOpen(true);
+    };
 
     return (
         <div>
@@ -109,12 +121,12 @@ function Charts({ isNew, headerText, editing, onChange, chart, width }) {
                                 resize: 'both',
                             },
                         },
-                    }} value={JSON.stringify(chartData)}/>
+                    }} value={JSON.stringify(chartData)} />
 
-                    <br />                   
+                    <br />
                 </>
             )}
-             {isNew && !isEditing && (
+            {isNew && !isEditing && (
                 <>
                     <TextField id="outlined-basic" sx={{
                         '& .MuiInputBase-input': {
@@ -128,7 +140,7 @@ function Charts({ isNew, headerText, editing, onChange, chart, width }) {
                         },
                     }} />
 
-                    <br />                   
+                    <br />
                 </>
             )}
             {!isEditing && (
@@ -142,7 +154,14 @@ function Charts({ isNew, headerText, editing, onChange, chart, width }) {
                     >
                         <MenuItem value={'line'}>Line</MenuItem>
                         <MenuItem value={'bar'}>Bar</MenuItem>
-                    </Select>                    
+                    </Select>
+
+                    <NeutralButton text={"Ask Gemma"} onClick={handleOpenAskGemma}></NeutralButton>
+                    <AskGemmaDialog
+                        open={isAskGemmaDialogOpen}
+                        onClose={handleDialogClose}
+                        stringData={JSON.stringify(chartData)}
+                    />
                 </>
             )}
 

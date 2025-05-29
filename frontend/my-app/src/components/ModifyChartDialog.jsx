@@ -19,7 +19,7 @@ function ModifyChartDialog({ open, onClose, refreshList, chart }) {
                 const parsed = JSON.parse(chart.jsonData);
                 setUpdateChartData(parsed)
             }
-            setLoading(false);
+            //setLoading(false);
         }, 1000);
     }, []);
 
@@ -36,9 +36,9 @@ function ModifyChartDialog({ open, onClose, refreshList, chart }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id:chart.id, jsonData: updateChartData }),
+                body: JSON.stringify({ id: chart.id, jsonData: updateChartData }),
             });
-            
+
             if (result.ok) {
                 refreshList();
                 handleClose();

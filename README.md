@@ -28,6 +28,11 @@ to start got to the keycloak folder and example:
 .\kc.bat start-dev
 or start using Docker
 
+## Ollama AI
+This sandbox uses to analyze example chart trends
+https://ollama.com/library/gemma3
+
+
 ## Profile page
 user can change some user details and UI theme
 

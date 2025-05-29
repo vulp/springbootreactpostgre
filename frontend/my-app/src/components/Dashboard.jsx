@@ -8,7 +8,7 @@ import { useApi } from '../utils/api';
 
 function Dashboard() {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-    const [isModifyDialogOpen, setIsModifyDialogOpen] = useState(false);
+    const [isModifyDialogOpen, setIsModifyDialogOpen] = useState(false);    
     const [chartToModify, setChartToModify] = useState(); 
     const [charts, setCharts] = useState([]);
     const { fetchWithAuth } = useApi();
@@ -32,15 +32,12 @@ function Dashboard() {
             });
             setCharts([]);
             const datas = await response.json();
-            //const parsedData = JSON.parse(datas[0].jsonData);
            console.log(datas);
             setCharts(datas);
-            // setDocumentations(data);
-            // setLoading(false);
+
         } catch (e) {
             console.log(e);
-            // setError(e.message);
-            // setLoading(false);
+
         }
     };
 
